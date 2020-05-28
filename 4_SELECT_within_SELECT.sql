@@ -51,3 +51,6 @@ SELECT name, continent, population FROM world w WHERE NOT EXISTS
 
 -- 10. Some countries have populations more than three times that of any of 
 --  their neighbours (in the same continent). Give the countries and continents.
+SELECT w1.name, w1.continent FROM world w1 WHERE w1.population > 
+  (SELECT 3 * MAX(w2.population) FROM world w2 WHERE w2.continent = w1.continent 
+    AND w2.name <> w1.name);
