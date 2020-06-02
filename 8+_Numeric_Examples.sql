@@ -23,7 +23,7 @@ SELECT subject, SUM((A_STRONGLY_AGREE  * response) / 100) FROM nss WHERE questio
 -- 6. Show the percentage of students who A_STRONGLY_AGREE to question 22 for the subject 
 --   '(8) Computer Science' show the same figure for the subject '(H) Creative Arts and Design'.
 SELECT subject, ROUND(SUM(response*A_STRONGLY_AGREE/100)/SUM(response)*100,0) FROM nss 
-  WHERE question='Q22' AND (subject='(8) Computer Science' OR subject='(H) Creative Arts and Design');
+  WHERE question='Q22' AND (subject='(8) Computer Science' OR subject='(H) Creative Arts and Design')
     GROUP BY subject;
 
 -- 7. Show the average scores for question 'Q22' for each institution that include 'Manchester' in the name.
