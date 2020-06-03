@@ -26,3 +26,12 @@ SELECT name, confirmed, RANK() OVER (ORDER BY confirmed DESC) rc, deaths,
     ORDER BY confirmed DESC;
 
 -- 7. Show the infect rate ranking for each country. Only include countries with a population of at least 10 million.
+SELECT world.name, ROUND(100000*confirmed/population,0) as rate, RANK() OVER (ORDER BY confirmed / population) r
+  FROM covid JOIN world ON covid.name=world.name WHERE whn = '2020-04-20' AND population >= 10000000
+    ORDER BY population DESC;
+
+-- 8. For each country that has had at last 1000 new cases in a single day, show the date of the peak number of new cases.
+SELECT name, date, peak_new_cases FROM (SELECT *, rank() over (PARTITION by name ORDER BY peak_new_cases DESC) rank 
+  FROM (SELECT name, DATE_FORMAT(whn, '%Y-%m-%d') date, 
+  confirmed - LAG(confirmed, 1) OVER (PARTITION BY name ORDER BY whn) peak_new_cases FROM covid) temp 
+    WHERE peak_new_cases >= 1000 ORDER BY date, peak_new_cases DESC) temp2 WHERE rank = 1;
